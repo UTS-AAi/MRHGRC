@@ -5,4 +5,4 @@ The paper can be found at: https://arxiv.org/abs/1905.12170
 
 Pipeline of the proposed method:
 
-![alt text](https://github.com/UTS-AAi/MRHGRC/blob/master/Demo/algorithm_pipeline.pdf)
+![Pipeline of the proposed method](https://github.com/UTS-AAi/MRHGRC/blob/master/Demo/pipeline.png)
