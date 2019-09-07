@@ -41,7 +41,11 @@ def predict(V, W, classId, XlT, XuT, patClassIdTest, gama = 1, oper = 'min'):
                           + mem              Hyperbox memberships
 
     """
-
+	if len(XlT.shape) == 1:
+        XlT = XlT.reshape(1, -1)
+    if len(XuT.shape) == 1:
+        XuT = XuT.reshape(1, -1)
+		
     #initialization
     yX = XlT.shape[0]
     misclass = np.zeros(yX)
@@ -95,7 +99,11 @@ def predict_with_manhattan(V, W, classId, XlT, XuT, patClassIdTest, gama = 1, op
                           + numSampleInBoundary     The number of samples in decision boundary
 
     """
-
+	if len(XlT.shape) == 1:
+        XlT = XlT.reshape(1, -1)
+    if len(XuT.shape) == 1:
+        XuT = XuT.reshape(1, -1)
+		
     #initialization
     yX = XlT.shape[0]
     misclass = np.zeros(yX)
