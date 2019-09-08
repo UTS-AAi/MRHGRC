@@ -319,6 +319,8 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                         
                         if len(index_Parent_Hyperbox) == 1:
                             parent_selection = index_Parent_Hyperbox[0]
+							if indtokeep[index_Parent_Hyperbox[0]] == False:
+                                indtokeep[i] = True
                             
                         elif len(index_Parent_Hyperbox) > 1:
                             start_id = 0
