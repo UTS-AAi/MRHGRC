@@ -302,7 +302,7 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                 V_same = self.V[id_hyperbox_same_label]
                 W_same = self.W[id_hyperbox_same_label]
                 
-                memValue = memberG(self.V[i], self.W[i], np.minimum(V_same, W_same), np.maximum(W_same, V_same), self.gamma, self.oper)
+                memValue = memberG(self.V[i], self.W[i], V_same, W_same, self.gamma, self.oper)
                 equal_one_index = memValue == 1
                 
                 if np.sum(equal_one_index) > 0:
@@ -315,7 +315,6 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                     
                     if isIncluded == True:
                         indtokeep[i] = False
-                        no_removed_boxes = no_removed_boxes + 1
                         # Update centroid of larger hyperbox
                         
                         if len(index_Parent_Hyperbox) == 1:
@@ -323,23 +322,27 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                             
                         elif len(index_Parent_Hyperbox) > 1:
                             start_id = 0
-                            while indtokeep[index_Parent_Hyperbox[start_id]] == False:
+                            while start_id < len(index_Parent_Hyperbox) and indtokeep[index_Parent_Hyperbox[start_id]] == False:
                                 start_id = start_id + 1 # remove cases that parent hyperboxes are merged
                             
-                            # Compute the distance from the centroid of hyperbox i to centroids of other hyperboxes and choose the hyperbox with the smallest distance to merge
-                            min_dis = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[start_id]])
-                            parent_selection = index_Parent_Hyperbox[start_id]
-                            for jj in range(start_id + 1, len(index_Parent_Hyperbox)):
-                                if indtokeep[index_Parent_Hyperbox[jj]] == True:
-                                    dist = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[jj]])
-                                    if min_dis < dist:
-                                        min_dis = dist
-                                        parent_selection = index_Parent_Hyperbox[jj]
-                                    
-                                    
-                        # Merge centroids and number of hyperboxes                       
-                        self.centroid[parent_selection] = (self.no_pat[parent_selection] * self.centroid[parent_selection] + self.no_pat[i] * self.centroid[i]) / (self.no_pat[i] + self.no_pat[parent_selection])
-                        self.no_pat[parent_selection] = self.no_pat[parent_selection] + self.no_pat[i]
+                            if start_id < len(index_Parent_Hyperbox):
+                                # Compute the distance from the centroid of hyperbox i to centroids of other hyperboxes and choose the hyperbox with the smallest distance to merge
+                                min_dis = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[start_id]])
+                                parent_selection = index_Parent_Hyperbox[start_id]
+                                for jj in range(start_id + 1, len(index_Parent_Hyperbox)):
+                                    if indtokeep[index_Parent_Hyperbox[jj]] == True:
+                                        dist = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[jj]])
+                                        if min_dis < dist:
+                                            min_dis = dist
+                                            parent_selection = index_Parent_Hyperbox[jj]
+                            else:
+                                indtokeep[i] = True
+                                        
+                        # Merge centroids and number of hyperboxes
+                        if indtokeep[i] == False:
+							no_removed_boxes = no_removed_boxes + 1
+                            self.centroid[parent_selection] = (self.no_pat[parent_selection] * self.centroid[parent_selection] + self.no_pat[i] * self.centroid[i]) / (self.no_pat[i] + self.no_pat[parent_selection])
+                            self.no_pat[parent_selection] = self.no_pat[parent_selection] + self.no_pat[i]
         
         # remove hyperboxes contained in other hyperboxes
         self.V = self.V[indtokeep, :]
