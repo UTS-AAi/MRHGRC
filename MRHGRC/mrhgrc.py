@@ -322,14 +322,20 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                             parent_selection = index_Parent_Hyperbox[0]
                             
                         elif len(index_Parent_Hyperbox) > 1:
+                            start_id = 0
+                            while indtokeep[index_Parent_Hyperbox[start_id]] == False:
+                                start_id = start_id + 1 # remove cases that parent hyperboxes are merged
+                            
                             # Compute the distance from the centroid of hyperbox i to centroids of other hyperboxes and choose the hyperbox with the smallest distance to merge
-                            min_dis = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[0]])
-                            parent_selection = index_Parent_Hyperbox[0]
-                            for jj in range(1, len(index_Parent_Hyperbox)):
-                                dist = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[jj]])
-                                if min_dis < dist:
-                                    min_dis = dist
-                                    parent_selection = index_Parent_Hyperbox[jj]
+                            min_dis = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[start_id]])
+                            parent_selection = index_Parent_Hyperbox[start_id]
+                            for jj in range(start_id + 1, len(index_Parent_Hyperbox)):
+                                if indtokeep[index_Parent_Hyperbox[jj]] == True:
+                                    dist = np.linalg.norm(self.centroid[i] - self.centroid[index_Parent_Hyperbox[jj]])
+                                    if min_dis < dist:
+                                        min_dis = dist
+                                        parent_selection = index_Parent_Hyperbox[jj]
+                                    
                                     
                         # Merge centroids and number of hyperboxes                       
                         self.centroid[parent_selection] = (self.no_pat[parent_selection] * self.centroid[parent_selection] + self.no_pat[i] * self.centroid[i]) / (self.no_pat[i] + self.no_pat[parent_selection])
