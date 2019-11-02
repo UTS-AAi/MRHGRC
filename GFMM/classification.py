@@ -9,11 +9,9 @@ GFMM Predictor
 """
 
 import numpy as np
-import torch
 from functionhelper.measurehelper import manhattan_distance
 from functionhelper.membershipcalc import memberG
 from functionhelper.bunchdatatype import Bunch
-from functionhelper.torch_membership_calc import torch_memberG, gpu_memberG
 from functionhelper import device, GPU_Computing_Threshold, is_Have_GPU, UNLABELED_CLASS
 
 def predict(V, W, classId, XlT, XuT, patClassIdTest, gama = 1, oper = 'min'):
