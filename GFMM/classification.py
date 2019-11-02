@@ -12,7 +12,7 @@ import numpy as np
 from functionhelper.measurehelper import manhattan_distance
 from functionhelper.membershipcalc import memberG
 from functionhelper.bunchdatatype import Bunch
-from functionhelper import device, GPU_Computing_Threshold, is_Have_GPU, UNLABELED_CLASS
+from functionhelper import UNLABELED_CLASS
 
 def predict(V, W, classId, XlT, XuT, patClassIdTest, gama = 1, oper = 'min'):
     """
