@@ -99,7 +99,7 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                             centroid[j] = centroid[j] + (((X_l[i] + X_u[i]) / 2) - centroid[j]) / no_Pats[j]                            
                             
                             adjust = True
-                            if classOfX != 0 and classId[j] == 0:
+                            if classOfX != UNLABELED_CLASS and classId[j] == UNLABELED_CLASS:
                                 classId[j] = classOfX               
                                 
                             break
@@ -174,7 +174,7 @@ class Multi_Resolution_Hierarchical_Granular_Res_Classifier(object):
                                 centroid[j] = centroid[j] + (((X_l[i] + X_u[i]) / 2) - centroid[j]) / no_Pats[j]                               
                             
                                 adjust = True
-                                if classOfX != 0 and classId[j] == 0:
+                                if classOfX != UNLABELED_CLASS and classId[j] == UNLABELED_CLASS:
                                     classId[j] = classOfX
 
                                 break
