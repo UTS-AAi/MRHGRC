@@ -337,7 +337,7 @@ class OnlineGFMM(BaseGFMMClassifier):
         class_tmp = self.classId[accuracy_larger_half]
         for c in current_classes:
             if c not in class_tmp:
-                pos = np.nonzero(self.classId == c)
+                pos = np.nonzero(self.classId == c)[0]
                 id_kept = np.random.randint(len(pos))
                 # keep pos[id_kept]
                 accuracy_larger_half[pos[id_kept]] = True
